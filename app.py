@@ -202,7 +202,7 @@ if uploaded_file is not None:
 
     # Plot 7: Exchange - gain/( loss) by Month
     if "Exchange - gain/( loss)" in df.columns and "Month" in df.columns:
-        st.subheader(f"Month-wise Exchange - gain/( loss) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
+        st.subheader(f"Month-wise Exchange - gain/( loss)(Current) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
 
         # Aggregate "Exchange - gain/( loss)" by month (sum or average as required)
         monthly_exchange_data = df.groupby("Month")["Exchange - gain/( loss)"].mean().reset_index()
