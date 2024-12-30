@@ -9,6 +9,7 @@ st.set_page_config(page_title="Stationary Data Analysis", layout="wide")
 # Add page title
 st.title("Stationary Data Analysis")
 
+
 # File uploader
 uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
 if uploaded_file is not None:
@@ -261,3 +262,30 @@ if uploaded_file is not None:
 
     else:
         st.error("Required columns 'VAR %-LC (ACT vsTGT)' and 'VAR %-USD (ACT vsTGT)' are not found in")
+
+
+    # Compare ACT-USD values by Region
+    if "Act. Using-Bgt. ex. Rates" in df.columns and "Region" in df.columns:
+        st.subheader(f"Act. Using-Bgt. ex. Rates Comparison by Region - Region: {selected_region if 'selected_region' in locals() else 'All'}")
+
+    # Aggregate ACT-USD by Region
+        region_usd_data = df.groupby("Region")["ACT -USD"].sum().reset_index()
+
+    # If a region is selected, filter for that region
+        if selected_region != "All":
+            region_usd_data = region_usd_data[region_usd_data["Region"] == selected_region]
+
+    # Plot Region-wise ACT-USD distribution
+        fig5, ax5 = plt.subplots(figsize=(8, 4))  # Adjusted size
+        sns.barplot(data=region_usd_data, x="Region", y="ACT -USD", ax=ax5)
+
+        ax5.set_title(f"Act. Using-Bgt. ex. Rates Distribution by Region", fontsize=12)
+        ax5.set_xlabel("Region", fontsize=10)
+        ax5.set_ylabel("Total Act. Using-Bgt. ex. Rates", fontsize=10)
+        plt.xticks(rotation=45, fontsize=9)
+        plt.yticks(fontsize=9)
+        st.pyplot(fig5)
+
+    else:
+        st.error("Required columns 'ACT -USD' and 'Region' are not found in the dataset. Please check the file.")
+    
