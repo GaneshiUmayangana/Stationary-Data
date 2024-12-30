@@ -135,7 +135,7 @@ if uploaded_file is not None:
 
     # Plot 4: ACT-USD and TGT-USD by Month
     if "ACT -USD" in df.columns and "TGT-USD" in df.columns and "Month" in df.columns:
-        st.subheader(f"ACT-USD and TGT-USD by Month (Custom Order) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
+        st.subheader(f"ACT-USD and TGT-USD by Month  - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
 
         # Aggregate ACT-USD and TGT-USD by month (sum or average as required)
         monthly_usd_data = df.groupby("Month")[["ACT -USD", "TGT-USD"]].sum().reset_index()
@@ -145,7 +145,7 @@ if uploaded_file is not None:
         sns.lineplot(data=monthly_usd_data, x="Month", y="ACT -USD", marker="o", label="ACT-USD", ax=ax4)
         sns.lineplot(data=monthly_usd_data, x="Month", y="TGT-USD", marker="o", label="TGT-USD", ax=ax4)
 
-        ax4.set_title("ACT-USD and TGT-USD by Month (Custom Order)", fontsize=12)
+        ax4.set_title("ACT-USD and TGT-USD by Month", fontsize=12)
         ax4.set_xlabel("Month", fontsize=10)
         ax4.set_ylabel("Values (USD)", fontsize=10)
         ax4.legend()
