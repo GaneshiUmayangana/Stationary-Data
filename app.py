@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Set up Streamlit page
-st.set_page_config(page_title="Stationary Data Analysis", layout="wide")
+st.set_page_config(page_title="Station Data Analysis", layout="wide")
 
 # Add page title
-st.title("Stationary Data Analysis")
+st.title("Station Data Analysis")
 
 
 # File uploader
