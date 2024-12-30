@@ -50,7 +50,7 @@ if uploaded_file is not None:
 
     # Plot 1: ACT-LC and TGT-LC by Month
     if "ACT -LC" in df.columns and "TGT-LC" in df.columns and "Month" in df.columns:
-        st.subheader(f"ACT-LC and TGT-LC by Month (Custom Order) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
+        st.subheader(f"ACT-LC and TGT-LC by Month- Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
 
         # Ensure "Month" column is categorical with the custom order
         df["Month"] = pd.Categorical(df["Month"], categories=month_order, ordered=True)
@@ -66,7 +66,7 @@ if uploaded_file is not None:
         sns.lineplot(data=monthly_data, x="Month", y="ACT -LC", marker="o", label="ACT-LC", ax=ax1)
         sns.lineplot(data=monthly_data, x="Month", y="TGT-LC", marker="o", label="TGT-LC", ax=ax1)
 
-        ax1.set_title("ACT-LC and TGT-LC by Month (Custom Order)", fontsize=12)
+        ax1.set_title("ACT-LC and TGT-LC by Month", fontsize=12)
         ax1.set_xlabel("Month", fontsize=10)
         ax1.set_ylabel("Values (LC)", fontsize=10)
         ax1.legend()
