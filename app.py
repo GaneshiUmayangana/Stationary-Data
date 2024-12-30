@@ -44,9 +44,20 @@ if uploaded_file is not None:
         pos_options = df["POINT OF SALE"].unique().tolist()
         selected_pos = st.sidebar.selectbox("Select Point of Sale", options=["All"] + pos_options)
 
-        # Filter data by selected Point of Sale
+    # Filter data by selected Point of Sale
         if selected_pos != "All":
             df = df[df["POINT OF SALE"] == selected_pos]
+
+        # Display the corresponding CCY for the selected POS
+            if "CCY" in df.columns:
+                unique_ccy = df["CCY"].unique()
+                if len(unique_ccy) == 1:
+                    st.sidebar.write(f"**Currency (CCY) for POS '{selected_pos}':** {unique_ccy[0]}")
+                else:
+                    st.sidebar.write(f"**Currencies (CCY) for POS '{selected_pos}':** {', '.join(unique_ccy)}")
+            else:
+                st.sidebar.warning("CCY column not found in the dataset.")
+
 
     # Plot 1: ACT-LC and TGT-LC by Month
     if "ACT -LC" in df.columns and "TGT-LC" in df.columns and "Month" in df.columns:
@@ -181,7 +192,7 @@ if uploaded_file is not None:
 
     # Plot 6: Month-wise Act. Using-Bgt. ex. Rates vs Act. Using- LY. Ex. Rates (Bar Plot)
     if "Act. Using-Bgt. ex. Rates" in df.columns and "Act. Using- LY. Ex. Rates" in df.columns and "Month" in df.columns:
-        st.subheader(f"Month-wise Act. Using-Bgt. ex. Rates vs Act. Using- LY. Ex. Rates - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
+        st.subheader(f"Month-wise Act. Using-Bgt. ex. Rates vs Act. Using- LY. Ex. Rates (Bar Plot) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
 
         # Aggregate "Act. Using-Bgt. ex. Rates" and "Act. Using- LY. Ex. Rates" by month
         monthly_rates_data = df.groupby("Month")[["Act. Using-Bgt. ex. Rates", "Act. Using- LY. Ex. Rates"]].sum().reset_index()
@@ -190,7 +201,7 @@ if uploaded_file is not None:
         fig6, ax6 = plt.subplots(figsize=(8, 4))  # Reduced size
         monthly_rates_data.set_index('Month')[['Act. Using-Bgt. ex. Rates', 'Act. Using- LY. Ex. Rates']].plot(kind='bar', ax=ax6)
 
-        ax6.set_title("Month-wise Act. Using-Bgt. ex. Rates vs Act. Using- LY. Ex. Rates ", fontsize=12)
+        ax6.set_title("Month-wise Act. Using-Bgt. ex. Rates vs Act. Using- LY. Ex. Rates (Bar Plot)", fontsize=12)
         ax6.set_xlabel("Month", fontsize=10)
         ax6.set_ylabel("Rates", fontsize=10)
         plt.xticks(rotation=45, fontsize=9)
