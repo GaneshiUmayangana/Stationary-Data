@@ -225,3 +225,26 @@ if uploaded_file is not None:
 
     else:
         st.error("Required column 'Exchange - gain/( loss)' and/or 'Month' are not found in the dataset. Please check the file.")
+
+    # Plot 8: VAR %-LC (ACT vsTGT) vs VAR %-USD (ACT vsTGT)
+    if "VAR %-LC (ACT vsTGT)" in df.columns and "VAR %-USD (ACT vsTGT)" in df.columns:
+        st.subheader(f"VAR %-LC (ACT vsTGT) vs VAR %-USD (ACT vsTGT) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
+
+        # Aggregate data by Month if needed (average or sum as required)
+        monthly_comparison_data = df.groupby("Month")[["VAR %-LC (ACT vsTGT)", "VAR %-USD (ACT vsTGT)"]].mean().reset_index()
+
+        # Plot VAR %-LC (ACT vsTGT) vs VAR %-USD (ACT vsTGT)
+        fig8, ax8 = plt.subplots(figsize=(8, 4))  # Reduced size
+        sns.lineplot(data=monthly_comparison_data, x="Month", y="VAR %-LC (ACT vsTGT)", marker="o", label="VAR %-LC (ACT vsTGT)", ax=ax8)
+        sns.lineplot(data=monthly_comparison_data, x="Month", y="VAR %-USD (ACT vsTGT)", marker="o", label="VAR %-USD (ACT vsTGT)", ax=ax8)
+
+        ax8.set_title("VAR %-LC (ACT vsTGT) vs VAR %-USD (ACT vsTGT)", fontsize=12)
+        ax8.set_xlabel("Month", fontsize=10)
+        ax8.set_ylabel("VAR %- (ACT vsTGT)", fontsize=10)
+        ax8.legend()
+        plt.xticks(rotation=45, fontsize=9)
+        plt.yticks(fontsize=9)
+        st.pyplot(fig8)
+
+    else:
+        st.error("Required columns 'VAR %-LC (ACT vsTGT)' and 'VAR %-USD (ACT vsTGT)' are not found in")
