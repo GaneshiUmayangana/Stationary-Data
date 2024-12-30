@@ -18,3 +18,4 @@ streamlit
 matplotlib
 seaborn
 pandas
+openpyxl
