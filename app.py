@@ -77,6 +77,29 @@ if uploaded_file is not None:
     else:
         st.error("Required columns 'ACT -LC', 'TGT-LC', and/or 'Month' are not found in the dataset. Please check the file.")
 
+       # Plot 4: ACT-USD and TGT-USD by Month
+    if "ACT -USD" in df.columns and "TGT-USD" in df.columns and "Month" in df.columns:
+        st.subheader(f"ACT-USD and TGT-USD by Month  - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
+
+        # Aggregate ACT-USD and TGT-USD by month (sum or average as required)
+        monthly_usd_data = df.groupby("Month")[["ACT -USD", "TGT-USD"]].sum().reset_index()
+
+        # Plot ACT-USD and TGT-USD curves
+        fig4, ax4 = plt.subplots(figsize=(8, 4))  # Reduced size
+        sns.lineplot(data=monthly_usd_data, x="Month", y="ACT -USD", marker="o", label="ACT-USD", ax=ax4)
+        sns.lineplot(data=monthly_usd_data, x="Month", y="TGT-USD", marker="o", label="TGT-USD", ax=ax4)
+
+        ax4.set_title("ACT-USD and TGT-USD by Month", fontsize=12)
+        ax4.set_xlabel("Month", fontsize=10)
+        ax4.set_ylabel("Values (USD)", fontsize=10)
+        ax4.legend()
+        plt.xticks(rotation=45, fontsize=9)
+        plt.yticks(fontsize=9)
+        st.pyplot(fig4)
+
+    else:
+        st.error("Required columns 'ACT -USD', 'TGT-USD', and/or 'Month' are not found in the dataset. Please check the file.")
+
     # Plot 2: VAR %-LC (ACT vsTGT) by Month
     if "VAR %-LC (ACT vsTGT)" in df.columns and "Month" in df.columns:
         st.subheader(f"Month-wise VAR %-LC (ACT vsTGT) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
@@ -133,28 +156,7 @@ if uploaded_file is not None:
     else:
         st.error("Required columns 'VAR %-USD (ACT vsTGT)' and/or 'Month' are not found in the dataset. Please check the file.")
 
-    # Plot 4: ACT-USD and TGT-USD by Month
-    if "ACT -USD" in df.columns and "TGT-USD" in df.columns and "Month" in df.columns:
-        st.subheader(f"ACT-USD and TGT-USD by Month  - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
-
-        # Aggregate ACT-USD and TGT-USD by month (sum or average as required)
-        monthly_usd_data = df.groupby("Month")[["ACT -USD", "TGT-USD"]].sum().reset_index()
-
-        # Plot ACT-USD and TGT-USD curves
-        fig4, ax4 = plt.subplots(figsize=(8, 4))  # Reduced size
-        sns.lineplot(data=monthly_usd_data, x="Month", y="ACT -USD", marker="o", label="ACT-USD", ax=ax4)
-        sns.lineplot(data=monthly_usd_data, x="Month", y="TGT-USD", marker="o", label="TGT-USD", ax=ax4)
-
-        ax4.set_title("ACT-USD and TGT-USD by Month", fontsize=12)
-        ax4.set_xlabel("Month", fontsize=10)
-        ax4.set_ylabel("Values (USD)", fontsize=10)
-        ax4.legend()
-        plt.xticks(rotation=45, fontsize=9)
-        plt.yticks(fontsize=9)
-        st.pyplot(fig4)
-
-    else:
-        st.error("Required columns 'ACT -USD', 'TGT-USD', and/or 'Month' are not found in the dataset. Please check the file.")
+ 
 
     # Plot 5: Region-wise ACT-USD Distribution
     if "ACT -USD" in df.columns and "Region" in df.columns:
