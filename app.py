@@ -176,7 +176,7 @@ if uploaded_file is not None:
 
     else:
         st.error("Required columns 'ACT -USD' and/or 'Region' are not found in the dataset. Please check the file.")
-    
+
     # Plot 6: Month-wise Act. Using-Bgt. ex. Rates vs Act. Using- LY. Ex. Rates (Bar Plot)
     if "Act. Using-Bgt. ex. Rates" in df.columns and "Act. Using- LY. Ex. Rates" in df.columns and "Month" in df.columns:
         st.subheader(f"Month-wise Act. Using-Bgt. ex. Rates vs Act. Using- LY. Ex. Rates (Bar Plot) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
@@ -197,3 +197,31 @@ if uploaded_file is not None:
 
     else:
         st.error("Required columns 'Act. Using-Bgt. ex. Rates', 'Act. Using- LY. Ex. Rates', and/or 'Month' are not found in the dataset. Please check the file.")
+
+    # Plot 7: Exchange - gain/( loss) by Month
+    if "Exchange - gain/( loss)" in df.columns and "Month" in df.columns:
+        st.subheader(f"Month-wise Exchange - gain/( loss) - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
+
+        # Aggregate "Exchange - gain/( loss)" by month (sum or average as required)
+        monthly_exchange_data = df.groupby("Month")["Exchange - gain/( loss)"].mean().reset_index()
+
+        # Plot Exchange - gain/( loss) by month
+        fig7, ax7 = plt.subplots(figsize=(8, 4))  # Reduced size
+        sns.lineplot(
+            data=monthly_exchange_data,
+            x="Month",
+            y="Exchange - gain/( loss)",
+            marker="o",
+            label="Exchange - gain/( loss)",
+            ax=ax7,
+        )
+
+        ax7.set_title("Month-wise Exchange - gain/( loss)", fontsize=12)
+        ax7.set_xlabel("Month", fontsize=10)
+        ax7.set_ylabel("Exchange Gain/( Loss)", fontsize=10)
+        plt.xticks(rotation=45, fontsize=9)
+        plt.yticks(fontsize=9)
+        st.pyplot(fig7)
+
+    else:
+        st.error("Required column 'Exchange - gain/( loss)' and/or 'Month' are not found in the dataset. Please check the file.")
