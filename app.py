@@ -42,13 +42,25 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.markdown(
+    """
+    <h4>Before uploading your Excel file, you can create the dataset here:</h4>
+    <a href="https://stationary-data-createdataset.streamlit.app/" target="_blank">Create Dataset</a>
+    """,
+    unsafe_allow_html=True,
+)
+
+
 # File uploader
 uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
 if uploaded_file is not None:
     # Load the dataset
     df = pd.read_excel(uploaded_file)
-    month_order = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November']
+    month_order = ['January','February','March','April', 'May', 'June', 'July', 'August', 'September', 'October', 'November','December']
+    unique_months = df['Month'].unique()
 
+    sorted_months = [month for month in month_order if month in unique_months]
+    df['Month'] = pd.Categorical(df['Month'], categories=sorted_months, ordered=True)
     # Ensure columns are clean
     df.columns = df.columns.str.strip()
 
