@@ -136,7 +136,7 @@ if uploaded_file is not None:
             with col3:
                 st.subheader(f"ACT-LC and TGT-LC by Month - Region: {selected_region if 'selected_region' in locals() else 'All'} - POS: {selected_pos if 'selected_pos' in locals() else 'All'}")
             # Ensure "Month" column is categorical with the custom order
-                df["Month"] = pd.Categorical(df["Month"], categories=month_order, ordered=True)
+                df["Month"] = pd.Categorical(df["Month"], categories=sorted_months, ordered=True)
                 df = df.sort_values("Month")
 
             # Aggregate by Month
